@@ -82,19 +82,19 @@ export default function LandingPage({ property }: LandingPageProps) {
         </Swiper>
       </div>
 
-      {/* Static Content Overlay - ALWAYS VISIBLE */}
+      {/* Static Content Overlay - Responsive adjustments */}
       {content && (
         <div className="absolute z-10 inset-0 flex flex-col items-center justify-center text-center px-4">
           <div className="max-w-4xl mx-auto w-full px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 tracking-tight drop-shadow-lg">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 xs:mb-4 sm:mb-6 tracking-tight drop-shadow-lg">
               {content.header}
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-6 md:mb-8 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-white/90 mb-4 xs:mb-6 sm:mb-8 max-w-2xl mx-auto drop-shadow-md px-2">
               {content.subheader}
             </p>
             <button
               onClick={() => setShowBookingForm(true)}
-              className="bg-white/90 hover:bg-white text-gray-900 font-semibold px-6 py-2 md:px-8 md:py-3 rounded-full text-base md:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="bg-white/90 hover:bg-white text-gray-900 font-semibold px-5 py-1.5 xs:px-6 xs:py-2 sm:px-8 sm:py-3 rounded-full text-sm xs:text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Book Now
             </button>
@@ -104,21 +104,21 @@ export default function LandingPage({ property }: LandingPageProps) {
 
       {/* Booking Form Modal */}
       {showBookingForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div 
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowBookingForm(false)}
           ></div>
           
-          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="relative bg-white rounded-lg sm:rounded-xl shadow-xl sm:shadow-2xl w-full max-w-xs xs:max-w-sm sm:max-w-md max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowBookingForm(false)}
-              className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors"
               aria-label="Close booking form"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5 sm:h-6 sm:w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -132,8 +132,7 @@ export default function LandingPage({ property }: LandingPageProps) {
               </svg>
             </button>
 
-            <div className="p-6 md:p-8">
-              {/* <h2 className="text-2xl font-bold text-blue-800 mb-6">Make a Reservation</h2> */}
+            <div className="p-4 sm:p-6 md:p-8">
               <BookingForm 
                 roomTypes={property.servicesOffered.map((s) => s.roomType)} 
                 onClose={() => setShowBookingForm(false)}
@@ -144,14 +143,14 @@ export default function LandingPage({ property }: LandingPageProps) {
         </div>
       )}
 
-      {/* Navigation Controls - ALWAYS VISIBLE */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 md:pb-12">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      {/* Navigation Controls - Responsive adjustments */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 pb-4 sm:pb-6 md:pb-8 lg:pb-12">
+        <div className="container mx-auto px-3 sm:px-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
             <div className="swiper-button-prev text-white opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 md:h-10 md:w-10"
+                className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -165,12 +164,12 @@ export default function LandingPage({ property }: LandingPageProps) {
               </svg>
             </div>
 
-            <div className="swiper-pagination flex gap-2 justify-center"></div>
+            <div className="swiper-pagination flex gap-1 sm:gap-2 justify-center"></div>
 
             <div className="swiper-button-next text-white opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 md:h-10 md:w-10"
+                className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -185,8 +184,8 @@ export default function LandingPage({ property }: LandingPageProps) {
             </div>
           </div>
 
-          {/* Property Info - ALWAYS VISIBLE */}
-          <div className="bg-black/50 text-white px-3 py-1 md:px-4 md:py-2 rounded-lg backdrop-blur-sm text-xs md:text-sm">
+          {/* Property Info - Responsive adjustments */}
+          <div className="bg-black/50 text-white px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-2 rounded-md sm:rounded-lg backdrop-blur-sm text-xs sm:text-sm">
             <div className="font-medium">{property.location}</div>
             <div className="opacity-80">{property.phone}</div>
           </div>
