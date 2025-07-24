@@ -15,12 +15,12 @@ export default function AdminLayout({
       <aside className="w-64 bg-blue-800 text-white p-6 shadow-lg">
         <h2 className="text-2xl font-bold mb-8 text-blue-100">Admin Panel</h2>
         <nav className="flex flex-col gap-2">
-          <Link 
+          {/* <Link 
             href="/admin" 
             className={`px-4 py-3 rounded-lg transition-all ${pathname === '/admin' ? 'bg-blue-600 text-white font-medium' : 'text-blue-100 hover:bg-blue-700 hover:text-white'}`}
           >
             Dashboard
-          </Link>
+          </Link> */}
           <Link 
             href="/admin/properties" 
             className={`px-4 py-3 rounded-lg transition-all ${pathname.startsWith('/admin/properties') ? 'bg-blue-600 text-white font-medium' : 'text-blue-100 hover:bg-blue-700 hover:text-white'}`}
