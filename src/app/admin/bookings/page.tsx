@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FiTrash2, FiEye, FiEdit, FiCalendar, FiUser, FiMail, FiHome, FiUsers, FiTrendingUp, FiDollarSign, FiClock } from "react-icons/fi";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FiTrash2, FiEye, FiEdit, FiCalendar, FiUser, FiMail, FiHome, FiUsers, FiTrendingUp, FiClock } from "react-icons/fi";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 interface Booking {
