@@ -20,6 +20,7 @@ export default function Services({ property }: ServicesProps) {
   const [selectedService, setSelectedService] =
     useState<IServiceOffered | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [bookingRoomType, setBookingRoomType] = useState<string | null>(null);
 
   return (
     <section className="py-8 sm:py-12 px-4 xs:px-6 sm:px-8 lg:px-10 bg-blue-50">
@@ -149,6 +150,7 @@ export default function Services({ property }: ServicesProps) {
                 <div className="mt-auto pt-4 sm:pt-5 md:pt-6 border-t border-blue-100">
                   <button
                     onClick={() => {
+                      setBookingRoomType(selectedService?.roomType || null);
                       setShowBookingForm(true);
                       setSelectedService(null);
                     }}
@@ -179,7 +181,7 @@ export default function Services({ property }: ServicesProps) {
               </button>
               <div className="p-4 sm:p-5 md:p-6">
                 <BookingForm
-                  roomType={selectedService?.roomType || ""}
+                  roomType={bookingRoomType || ""}
                   propertyId={String(property._id)}
                 />
               </div>
