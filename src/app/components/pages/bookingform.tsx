@@ -13,8 +13,8 @@ export default function BookingForm({ roomType, roomTypes, propertyId }: Booking
   const [selectedRoomType, setSelectedRoomType] = useState(
     roomType || roomTypes?.[0] || ""
   );
-  console.log("Selected Room Type:", selectedRoomType);
-  console.log("Property ID:", propertyId);
+  // console.log("Selected Room Type:", selectedRoomType);
+  // console.log("Property ID:", propertyId);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [fromDate, setFromDate] = useState("");
