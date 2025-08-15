@@ -1,8 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FiTrash2, FiEdit, FiStar, FiUser, FiMessageSquare, FiCalendar } from "react-icons/fi";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  FiTrash2,
+  FiEdit,
+  FiStar,
+  FiUser,
+  FiMessageSquare,
+  FiCalendar,
+} from "react-icons/fi";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 interface Testimonial {
   _id: string;
@@ -24,6 +39,7 @@ export default function AdminComments() {
         const res = await fetch("/api/testimonials");
         const data = await res.json();
         setTestimonials(data);
+        console.log("Fetched testimonials:", data);
       } catch (error) {
         console.error("Failed to fetch testimonials:", error);
       } finally {
@@ -53,35 +69,50 @@ export default function AdminComments() {
   };
 
   // Filter testimonials based on search and rating filter
-  const filteredTestimonials = testimonials.filter(testimonial => {
-    const matchesSearch = testimonial.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         testimonial.message.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRating = ratingFilter ? testimonial.rating === ratingFilter : true;
+  const filteredTestimonials = testimonials.filter((testimonial) => {
+    const matchesSearch =
+      testimonial.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      testimonial.message.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRating = ratingFilter
+      ? testimonial.rating === ratingFilter
+      : true;
     return matchesSearch && matchesRating;
   });
 
   // Prepare data for ratings distribution chart
-  const ratingsData = [1, 2, 3, 4, 5].map(rating => ({
+  const ratingsData = [1, 2, 3, 4, 5].map((rating) => ({
     rating,
-    count: testimonials.filter(t => t.rating === rating).length
+    count: testimonials.filter((t) => t.rating === rating).length,
   }));
 
   // Calculate statistics
   const totalTestimonials = testimonials.length;
-  const averageRating = totalTestimonials > 0 
-    ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / totalTestimonials).toFixed(1)
-    : 0;
-  const latestTestimonial = testimonials.length > 0 
-    ? new Date(testimonials[testimonials.length - 1].createdAt).toLocaleDateString() 
-    : "None";
+  const averageRating =
+    totalTestimonials > 0
+      ? (
+          testimonials.reduce((sum, t) => sum + Number(t.rating), 0) /
+          totalTestimonials
+        ).toFixed(1)
+      : "0.0";
+
+  const latestTestimonial =
+    testimonials.length > 0
+      ? new Date(
+          testimonials[testimonials.length - 1].createdAt
+        ).toLocaleDateString()
+      : "None";
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800">Customer Testimonials</h2>
-            <p className="text-gray-600">Manage and analyze customer feedback</p>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Customer Testimonials
+            </h2>
+            <p className="text-gray-600">
+              Manage and analyze customer feedback
+            </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <div className="relative flex-grow">
@@ -97,11 +128,15 @@ export default function AdminComments() {
             <select
               className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               value={ratingFilter || ""}
-              onChange={(e) => setRatingFilter(e.target.value ? Number(e.target.value) : null)}
+              onChange={(e) =>
+                setRatingFilter(e.target.value ? Number(e.target.value) : null)
+              }
             >
               <option value="">All Ratings</option>
-              {[1, 2, 3, 4, 5].map(r => (
-                <option key={r} value={r}>{r} Star{r !== 1 ? 's' : ''}</option>
+              {[1, 2, 3, 4, 5].map((r) => (
+                <option key={r} value={r}>
+                  {r} Star{r !== 1 ? "s" : ""}
+                </option>
               ))}
             </select>
           </div>
@@ -181,9 +216,13 @@ export default function AdminComments() {
                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
               />
             </svg>
-            <h3 className="mt-2 text-lg font-medium text-gray-900">No testimonials found</h3>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">
+              No testimonials found
+            </h3>
             <p className="mt-1 text-gray-500">
-              {searchTerm || ratingFilter ? "Try adjusting your filters" : "No testimonials have been submitted yet"}
+              {searchTerm || ratingFilter
+                ? "Try adjusting your filters"
+                : "No testimonials have been submitted yet"}
             </p>
           </div>
         ) : (
@@ -192,48 +231,76 @@ export default function AdminComments() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Customer
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Message
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Rating
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Date
                     </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredTestimonials.map((testimonial) => (
-                    <tr key={testimonial._id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={testimonial._id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
                             <FiUser className="h-5 w-5 text-purple-600" />
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{testimonial.name}</div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {testimonial.name}
+                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900 max-w-xs truncate">{testimonial.message}</div>
+                        <div className="text-sm text-gray-900 max-w-xs truncate">
+                          {testimonial.message}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
                             <FiStar
                               key={i}
-                              className={`h-5 w-5 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                              className={`h-5 w-5 ${
+                                i < testimonial.rating
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
+                              }`}
                             />
                           ))}
-                          <span className="ml-2 text-gray-500 text-sm">({testimonial.rating})</span>
+                          <span className="ml-2 text-gray-500 text-sm">
+                            ({testimonial.rating})
+                          </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -242,7 +309,9 @@ export default function AdminComments() {
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end space-x-3">
                           <button
-                            onClick={() => console.log('Edit testimonial', testimonial._id)}
+                            onClick={() =>
+                              console.log("Edit testimonial", testimonial._id)
+                            }
                             className="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50"
                             title="Edit"
                           >

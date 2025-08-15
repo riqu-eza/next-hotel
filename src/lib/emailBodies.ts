@@ -73,9 +73,7 @@ export function createClientBookingEmail(booking: IBooking): string {
         <p>Thank you for choosing us! Your booking has been confirmed. Below are your reservation details:</p>
         
         <div class="details">
-          <div class="detail-item">
-            <strong>Reservation Number:</strong> #${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}
-          </div>
+          
           <div class="detail-item">
             <strong>Room Type:</strong> ${booking.roomType}
           </div>
@@ -95,9 +93,9 @@ export function createClientBookingEmail(booking: IBooking): string {
 
         <p>We're excited to welcome you! If you have any special requests or need to modify your reservation, please don't hesitate to contact us.</p>
         
-        <p>For your convenience, you may also:</p>
-        <a href="#" class="button">View Your Booking</a>
-        <a href="#" class="button" style="background-color: #e53e3e;">Cancel Reservation</a>
+        // <p>For your convenience, you may also:</p>
+        // <a href="#" class="button">View Your Booking</a>
+        // <a href="#" class="button" style="background-color: #e53e3e;">Cancel Reservation</a>
 
         <div class="footer">
           <p>Thank you for your trust in our services.</p>

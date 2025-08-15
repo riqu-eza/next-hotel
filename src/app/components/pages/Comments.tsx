@@ -14,6 +14,8 @@ export default function Comments() {
   const [message, setMessage] = useState("");
   const [rating, setRating] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [posting, setPosting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchTestimonials = async () => {
     const res = await fetch("/api/testimonials");
@@ -25,16 +27,31 @@ export default function Comments() {
   const addTestimonial = async () => {
     if (!name || !message || !rating) return;
 
-    await fetch("/api/testimonials", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, message, rating }),
-    });
+    setPosting(true);
+    setSuccessMessage("");
 
-    setName("");
-    setMessage("");
-    setRating(5);
-    fetchTestimonials();
+    try {
+      const res = await fetch("/api/testimonials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, message, rating }),
+      });
+
+      if (res.ok) {
+        setName("");
+        setMessage("");
+        setRating(5);
+        setSuccessMessage("✅ Your testimonial has been posted!");
+        fetchTestimonials();
+      } else {
+        setSuccessMessage("❌ Failed to post testimonial. Please try again.");
+      }
+    } catch (error) {
+      setSuccessMessage("⚠️ An error occurred while posting.");
+    } finally {
+      setPosting(false);
+      setTimeout(() => setSuccessMessage(""), 3000); // Hide after 3 sec
+    }
   };
 
   const deleteTestimonial = async (id: string) => {
@@ -201,7 +218,7 @@ export default function Comments() {
                 placeholder="example@email.com"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border border-blue-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                className="w-full border border-blue-200 rounded-lg px-3 text-black py-2 sm:px-4 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             <div>
@@ -217,7 +234,7 @@ export default function Comments() {
                 placeholder="Share your experience..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full border border-blue-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                className="w-full border border-blue-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               ></textarea>
             </div>
             <div>
@@ -231,7 +248,7 @@ export default function Comments() {
                 id="rating"
                 value={rating}
                 onChange={(e) => setRating(Number(e.target.value))}
-                className="w-full border border-blue-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                className="w-full border border-blue-200 rounded-lg px-3 py-2 sm:px-4 text-black sm:py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               >
                 {[1, 2, 3, 4, 5].map((r) => (
                   <option key={r} value={r}>
@@ -242,12 +259,23 @@ export default function Comments() {
             </div>
 
             <div className="flex justify-center">
-              <button
-                onClick={addTestimonial}
-                className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium px-6 py-2 sm:px-8 sm:py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-md hover:shadow-lg text-sm sm:text-base"
-              >
-                Submit Testimonial
-              </button>
+              <div className="flex justify-center">
+                <button
+                  onClick={addTestimonial}
+                  disabled={posting}
+                  className={`${
+                    posting ? "opacity-60 cursor-not-allowed" : ""
+                  }  bg-blue-600   text-white font-medium px-6 py-2 sm:px-8 sm:py-3 rounded-lg transition-all duration-300`}
+                >
+                  {posting ? "Posting..." : "Submit Testimonial"}
+                </button>
+              </div>
+
+              {successMessage && (
+                <div className="mt-4 text-center text-sm font-medium text-green-600">
+                  {successMessage}
+                </div>
+              )}
             </div>
           </div>
         </div>
