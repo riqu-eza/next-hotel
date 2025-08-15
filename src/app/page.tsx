@@ -3,7 +3,7 @@ import Script from "next/script";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Your Website Title",
+  title: "Hotel Website – Dancah Technology",
   description:
     "List, manage, and promote your Hotel, BnB, or Property online with our fully-featured platform.",
   openGraph: {
