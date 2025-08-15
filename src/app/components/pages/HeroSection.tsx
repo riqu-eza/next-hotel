@@ -33,7 +33,12 @@ export default function HeroSection() {
   const firstProperty = properties[0];
 
   // ✅ Only render children when firstProperty is ready
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   if (!firstProperty) return <div>No property found.</div>;
 
   return (
@@ -44,7 +49,7 @@ export default function HeroSection() {
 
       <AboutPage property={firstProperty} />
       <Comments />
-      <Footer/>
+      <Footer />
     </>
   );
 }
