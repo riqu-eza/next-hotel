@@ -31,7 +31,7 @@ export default function HeroSection() {
   }, []);
 
   const firstProperty = properties[0];
-
+console.log("First Property:", firstProperty);
   // ✅ Only render children when firstProperty is ready
   if (loading)
     return (

@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { IContent } from "@/models/content";
 import { IProperty } from "@/models/property";
+// import { Ilocation } from "@/models/property";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
@@ -13,6 +15,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import MapShow from "../Map/MapShow";
 
 interface LandingPageProps {
   property: IProperty;
@@ -21,6 +24,8 @@ interface LandingPageProps {
 export default function LandingPage({ property }: LandingPageProps) {
   const [content, setContent] = useState<IContent | null>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const { location } = property;
+  const firstLocation = Array.isArray(location) ? location[0] : location;
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -31,6 +36,13 @@ export default function LandingPage({ property }: LandingPageProps) {
 
     fetchContent();
   }, []);
+  const primaryLocation = location?.[0];
+
+  const getGoogleMapsUrl = () => {
+    if (!primaryLocation) return "#";
+    if (primaryLocation.shareUrl) return primaryLocation.shareUrl;
+    return `https://www.google.com/maps?q=${primaryLocation.lat},${primaryLocation.lng}`;
+  };
 
   if (!property) return null;
 
@@ -105,11 +117,11 @@ export default function LandingPage({ property }: LandingPageProps) {
       {/* Booking Form Modal */}
       {showBookingForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-          <div 
+          <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowBookingForm(false)}
           ></div>
-          
+
           <div className="relative bg-white rounded-lg sm:rounded-xl shadow-xl sm:shadow-2xl w-full max-w-xs xs:max-w-sm sm:max-w-md max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowBookingForm(false)}
@@ -133,8 +145,8 @@ export default function LandingPage({ property }: LandingPageProps) {
             </button>
 
             <div className="p-4 sm:p-6 md:p-8">
-              <BookingForm 
-                roomTypes={property.servicesOffered.map((s) => s.roomType)} 
+              <BookingForm
+                roomTypes={property.servicesOffered.map((s) => s.roomType)}
                 onClose={() => setShowBookingForm(false)}
                 propertyId={String(property._id)}
               />
@@ -186,8 +198,29 @@ export default function LandingPage({ property }: LandingPageProps) {
 
           {/* Property Info - Responsive adjustments */}
           <div className="bg-black/50 text-white px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-2 rounded-md sm:rounded-lg backdrop-blur-sm text-xs sm:text-sm">
-            <div className="font-medium">{property.location}</div>
+            <div className="font-medium text-xs sm:text-sm text-whiteI  flex items-center order-2 sm:order-none">
+              {primaryLocation ? (
+                <a
+                  href={getGoogleMapsUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-600 hover:underline"
+                >
+                  {primaryLocation.address || "View on Map"}
+                </a>
+              ) : (
+                <span>Location not specified</span>
+              )}
+            </div>
             <div className="opacity-80">{property.phone}</div>
+            <div className="mt-4">
+              <MapShow
+                property={property}
+                height="200px border-2 rounded-md border-blue-500"
+                zoom={13}
+                className="border-t"
+              />
+            </div>
           </div>
         </div>
       </div>
